@@ -1,0 +1,8 @@
+inputs:
+  nixpkgs:
+    url: github:NixOS/nixpkgs/nixos-23.11
+  phps:
+    url: github:fossar/nix-phps
+    inputs:
+      nixpkgs:
+        follows: nixpkgs
