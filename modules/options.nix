@@ -77,7 +77,7 @@ in {
     projectRoot = lib.mkOption {
       type = lib.types.str;
       description = "Root of the project as path from the file devenv.nix";
-      default = ".";
+      default = "./apps/neos-cms";
       example = "project";
     };
 

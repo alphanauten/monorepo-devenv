@@ -2,8 +2,6 @@
 let
   cfg = config.alphanauten;
 
-  currentVersion = "v1.0.0";
-
   listEntries = path:
     map (name: path + "/${name}") (builtins.attrNames (builtins.readDir path));
 in {
@@ -13,11 +11,12 @@ in {
     packages = [
       pkgs.jq
       pkgs.gnupatch
+      pkgs.corepack
     ] ++ cfg.additionalPackages;
 
     languages.javascript = {
       enable = lib.mkDefault true;
-      package = lib.mkDefault pkgs.nodejs-18_x;
+      package = lib.mkDefault pkgs.nodejs_20;
     };
 
     services.adminer.enable = lib.mkDefault true;
@@ -33,11 +32,19 @@ in {
     # Environment variables
     env = lib.mkMerge [
       (lib.mkIf cfg.enable {
-        DATABASE_URL = lib.mkDefault "mysql://neos:neos@127.0.0.1:${toString cfg.mysqlPort}/neos";
+        FLOW_CONTEXT = lib.mkDefault "Development";
+        NEOS_IMAGINE_DRIVER = lib.mkDefault "imagick";
+        NEOS_DB_DRIVER = lib.mkDefault "mysql";
+        NEOS_DB_HOST = lib.mkDefault "localhost";
+        NEOS_DB_PORT = lib.mkDefault "3306";
+        NEOS_DB_NAME = lib.mkDefault "neos";
+        NEOS_DB_USER = lib.mkDefault "neos";
+        NEOS_DB_PASSWORD = lib.mkDefault "neos";
+
         MAILER_URL = lib.mkDefault "smtp://127.0.0.1:${toString cfg.mailhogSmtpPort}?encryption=&auth_mode=";
         MAILER_DSN = lib.mkDefault "smtp://127.0.0.1:${toString cfg.mailhogSmtpPort}?encryption=&auth_mode=";
 
-        APP_URL = lib.mkDefault "http://127.0.0.1:${toString cfg.httpPort}";
+        NEOS_BASE_URL = lib.mkDefault "http://127.0.0.1:${toString cfg.httpPort}";
         CYPRESS_baseUrl = lib.mkDefault "http://127.0.0.1:${toString cfg.httpPort}";
 
         SQL_SET_DEFAULT_SESSION_VARIABLES = lib.mkDefault "0";

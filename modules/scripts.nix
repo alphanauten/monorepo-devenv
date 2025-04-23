@@ -26,6 +26,11 @@ let
       ${pkgs.coreutils}/bin/sleep infinity
     fi
 
+    corepack enable
+    corepack prepare pnpm@latest --activate
+
+    pnpm i
+
     ${scriptUpdateConfig}
 
     echo -e "Startup completed"
@@ -45,15 +50,6 @@ let
       exit 1
     fi
 
-    # additional config
-    ${lib.concatMapStrings ({ name, value }: ''
-      $CONSOLE system:config:set ${name} ${value} || exit 1
-      echo "System config ${name} set to ${value}"
-    '') systemConfigEntries}
-
-    # default config
-    $CONSOLE system:config:set core.mailerSettings.emailAgent "" || exit 1
-    echo "System config core.mailerSettings.emailAgent set to '''"
   '';
 
   importDbHelper = pkgs.writeScript "importDbHelper" ''
@@ -109,15 +105,11 @@ in {
 
   # Symfony related scripts
   scripts.cc.exec = ''
-    CONSOLE=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/bin/console
+    CONSOLE=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/.flow
 
     if test -f "$CONSOLE"; then
-      exec $CONSOLE cache:clear
+      exec $CONSOLE flow:cache:flush
     fi
-  '';
-
-  scripts.uuid.exec = ''
-    ${pkgs.toybox}/bin/uuidgen | tr "[:upper:]" "[:lower:]" | sed 's/-//g'
   '';
 
   scripts.importdb.exec = ''
