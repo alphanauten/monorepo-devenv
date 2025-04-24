@@ -19,10 +19,10 @@ let
       ${pkgs.coreutils}/bin/sleep 1
     done
 
-    TABLE=$($DEVENV_PROFILE/bin/mysql neos -s -N -e 'SHOW TABLES LIKE "system_config";')
+    TABLE=$($DEVENV_PROFILE/bin/mysql neos -s -N -e 'SHOW TABLES LIKE "neos_neos_domain_model_site";')
 
     if [[ $TABLE == "" ]]; then
-      echo "Table system_config is missing. Run >updateSystemConfig< manually to ensure the dev status of your setup!"
+      echo "Table neos_neos_domain_model_site is missing. Run >updateSystemConfig< manually to ensure the dev status of your setup!"
       ${pkgs.coreutils}/bin/sleep infinity
     fi
 
@@ -50,6 +50,23 @@ let
       exit 1
     fi
 
+  '';
+
+  neosInit = pkgs.writeScript "neos:init" ''
+    VENDOR=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/vendor/autoload.php
+    CONSOLE=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/.flow
+
+    echo "Updating system config"
+
+    if [ ! -f "$VENDOR" ] || [ ! -f "$CONSOLE" ]; then
+      echo "Vendor folder or console not found. Please run composer install."
+      exit 1
+    fi
+
+    $CONSOLE doctrine:migrate
+    $CONSOLE user:create --roles Administrator admin neos neos admin
+
+    echo "Created user admin:neos"
   '';
 
   importDbHelper = pkgs.writeScript "importDbHelper" ''
@@ -101,6 +118,11 @@ in {
   # Config related scripts
   scripts.updateSystemConfig.exec = ''
     ${scriptUpdateConfig}
+  '';
+
+  # Config related scripts
+  scripts."neos:init".exec = ''
+    ${neosInit}
   '';
 
   # Symfony related scripts
