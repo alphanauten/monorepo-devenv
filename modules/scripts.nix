@@ -41,7 +41,7 @@ let
 
   scriptUpdateConfig = pkgs.writeScript "scriptUpdateConfig" ''
     VENDOR=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/Packages/Libraries/autoload.php
-    CONSOLE=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/.flow
+    CONSOLE=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/flow
 
     echo "Updating system config"
     echo "${config.env.DEVENV_ROOT}/${cfg.projectRoot}"
@@ -55,7 +55,7 @@ let
 
   neosInit = pkgs.writeScript "neos:init" ''
     VENDOR=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/Packages/Libraries/autoload.php
-    CONSOLE=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/.flow
+    CONSOLE=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/flow
 
     echo "Updating system config"
     echo "${config.env.DEVENV_ROOT}/${cfg.projectRoot}"
