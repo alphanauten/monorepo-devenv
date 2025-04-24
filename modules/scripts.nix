@@ -40,10 +40,11 @@ let
   systemConfigEntries = lib.mapAttrsToList (name: value: { inherit name value; }) cfg.systemConfig;
 
   scriptUpdateConfig = pkgs.writeScript "scriptUpdateConfig" ''
-    VENDOR=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/vendor/autoload.php
+    VENDOR=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/Packages/Libraries/autoload.php
     CONSOLE=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/.flow
 
     echo "Updating system config"
+    echo "${config.env.DEVENV_ROOT}/${cfg.projectRoot}"
 
     if [ ! -f "$VENDOR" ] || [ ! -f "$CONSOLE" ]; then
       echo "Vendor folder or console not found. Please run composer install."
@@ -57,6 +58,7 @@ let
     CONSOLE=${config.env.DEVENV_ROOT}/${cfg.projectRoot}/.flow
 
     echo "Updating system config"
+    echo "${config.env.DEVENV_ROOT}/${cfg.projectRoot}"
 
     if [ ! -f "$VENDOR" ] || [ ! -f "$CONSOLE" ]; then
       echo "Vendor folder or console not found. Please run composer install."
