@@ -1,0 +1,14 @@
+allowUnfree: true
+imports:
+  - alphanauten
+inputs:
+  nixpkgs:
+    url: github:NixOS/nixpkgs/nixos-unstable
+  alphanauten:
+    url: github:alphanauten/monorepo-devenv?ref=v1.0.0-RC1
+    flake: false
+  phps:
+    url: github:fossar/nix-phps
+    inputs:
+      nixpkgs:
+        follows: nixpkgs

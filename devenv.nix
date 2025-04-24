@@ -33,10 +33,11 @@ in {
     env = lib.mkMerge [
       (lib.mkIf cfg.enable {
         FLOW_CONTEXT = lib.mkDefault "Development";
+        FLOW_REWRITEURLS = "1";
         NEOS_IMAGINE_DRIVER = lib.mkDefault "imagick";
         NEOS_DB_DRIVER = lib.mkDefault "mysql";
-        NEOS_DB_HOST = lib.mkDefault "localhost";
-        NEOS_DB_PORT = lib.mkDefault "3306";
+        NEOS_DB_HOST = lib.mkDefault "127.0.0.1";
+        NEOS_DB_PORT = lib.mkDefault "${toString cfg.mysqlPort}";
         NEOS_DB_NAME = lib.mkDefault "neos";
         NEOS_DB_USER = lib.mkDefault "neos";
         NEOS_DB_PASSWORD = lib.mkDefault "neos";

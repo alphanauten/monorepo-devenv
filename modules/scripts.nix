@@ -26,12 +26,12 @@ let
       ${pkgs.coreutils}/bin/sleep infinity
     fi
 
+    ${scriptUpdateConfig}
+
     corepack enable
     corepack prepare pnpm@latest --activate
 
     pnpm i
-
-    ${scriptUpdateConfig}
 
     echo -e "Startup completed"
     ${pkgs.coreutils}/bin/sleep infinity
