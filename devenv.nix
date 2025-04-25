@@ -42,12 +42,14 @@ in {
         NEOS_DB_USER = lib.mkDefault "neos";
         NEOS_DB_PASSWORD = lib.mkDefault "neos";
 
-
-        MAILER_URL = lib.mkDefault "smtp://127.0.0.1:${toString cfg.mailhogSmtpPort}?encryption=&auth_mode=";
-        MAILER_DSN = lib.mkDefault "smtp://127.0.0.1:${toString cfg.mailhogSmtpPort}?encryption=&auth_mode=";
+        # TODO: Check Settings
+        POSTFIX_HOST = lib.mkDefault "127.0.0.1";
+        POSTFIX_PORT = "${toString cfg.mailhogSmtpPort}";
+        POSTFIX_USER_NAME= "";
+        POSTFIX_USER_PASSWORD= "";
 
         NEOS_BASE_URL = lib.mkDefault "http://127.0.0.1:${toString cfg.httpPort}";
-        CYPRESS_baseUrl = lib.mkDefault "http://127.0.0.1:${toString cfg.httpPort}";
+        PUBLIC_BASE_URL = "http://localhost:3000";
 
         SQL_SET_DEFAULT_SESSION_VARIABLES = lib.mkDefault "0";
 
